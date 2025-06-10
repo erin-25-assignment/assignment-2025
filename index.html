@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>넷플릭스</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- 헤더 -->
+  <header class="navbar">
+    <div class="logo">NETFLIX</div>
+    <nav class="menu">
+      <a href="#">홈</a>
+      <a href="#">시리즈</a>
+      <a href="#">영화</a>
+      <a href="#">내가 찜한 콘텐츠</a>
+    </nav>
+  </header>
+
+  <!-- 메인 섹션 -->
+  <section class="main">
+    <video autoplay muted loop class="background-video">
+      <source src="넷플릭스 Tudum 2025.mp4" type="video/mp4" />
+    </video>
+    <div class="main-content">
+      <h1>Tudum 2025</h1>
+      <p>넷플릭스 Tudum 2025 | 공식 예고편 | 6월 1일 | 넷플릭스</p>
+      <div class="buttons">
+        <button class="play">▶ 재생</button>
+        <button class="info">ℹ 정보</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 인기 콘텐츠 -->
+  <section class="category">
+    <h2>인기 콘텐츠</h2>
+    <div class="movie-row-wrapper">
+        <div class="movie-row scrollable-row" id="movieRow1">
+      <div class="movie">
+        <img src="movie/movie1.jpg" alt="Movie 1" />
+        <div class="movie-preview">
+          <strong>멜로 무비</strong><br />따뜻한 사랑 가득한 이야기
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie2.jpg" alt="Movie 2" />
+        <div class="movie-preview">
+          <strong>폭싹 속았수다</strong><br />그 시절 그 감정 그대로
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie3.png" alt="Movie 3" />
+        <div class="movie-preview">
+          <strong>The killer</strong><br />숨막히는 액션과 스릴
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie4.png" alt="Movie 4" />
+        <div class="movie-preview">
+          <strong>Carry-On</strong><br />비행기 테러를 막아라
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie5.png" alt="Movie 5" />
+        <div class="movie-preview">
+          <strong>오징어 게임 시즌1</strong><br />우승을 위한 목숨을 건 사투
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie6.png" alt="Movie 6" />
+        <div class="movie-preview">
+          <strong>오징어 게임 시즌2</strong><br />복수를 다짐하며 다시 돌아왔다
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie7.png" alt="Movie 7" />
+        <div class="movie-preview">
+          <strong>Kinda Pregnant</strong><br />유쾌한 코미디와 따뜻한 감동
+        </div>
+      </div>
+    </div>
+    <button class="scroll-button" onclick="scrollRight('movieRow1')">▶</button>
+    </div>
+  </section>
+
+  <!-- 금주 개봉작 -->
+  <section class="category">
+    <h2>금주 개봉작</h2>
+    <div class="movie-row-wrapper">
+        <div class="movie-row scrollable-row" id="movieRow2">
+      <div class="movie">
+        <img src="movie/movie7.png" alt="New Movie 1" />
+        <div class="movie-preview">
+         <strong>Kinda Pregnant</strong><br />유쾌한 코미디와 따뜻한 감동
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie8.png" alt="New Movie 2" />
+        <div class="movie-preview">
+          <strong>La Dolce Villa</strong><br />아름다운 풍경과 로맨틱한 스토리
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie9.png" alt="New Movie 3" />
+        <div class="movie-preview">
+          <strong>Back in Action</strong><br />액션과 스릴을 겸비한 작품
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie10.png" alt="New Movie 4" />
+        <div class="movie-preview">
+          <strong>Cassandra</strong><br />미스터리와 스릴러
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie11.png" alt="New Movie 5" />
+        <div class="movie-preview">
+          <strong>Gabriel Basso</strong><br /> 첩보 스릴러로, 긴장감 넘치는 전개
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie12.png" alt="New Movie 6" />
+        <div class="movie-preview">
+          <strong>The Åre Murders</strong><br />범죄 미스터리 장르
+        </div>
+      </div>
+      <div class="movie">
+        <img src="movie/movie2.jpg" alt="New Movie 7" />
+        <div class="movie-preview">
+        <strong>폭싹 속았수다</strong><br />그 시절 그 감정 그대로
+        </div>
+      </div>
+    </div>
+    <button class="scroll-button" onclick="scrollRight('movieRow2')">▶</button>
+</div>
+<script>
+    function scrollRight(id) {
+      const row = document.getElementById(id);
+      row.scrollBy({ left: 400, behavior: 'smooth' });
+    }
+  
+    function autoScroll(id, speed) {
+      const row = document.getElementById(id);
+  
+      const clones = [];
+      const children = row.children;
+      const cloneCount = 5;
+  
+      const existingClones = row.querySelectorAll(".cloned");
+      existingClones.forEach((clone) => clone.remove());
+  
+      for (let i = 0; i < cloneCount; i++) {
+        const clone = children[i].cloneNode(true);
+        clone.classList.add('cloned');
+        row.appendChild(clone);
+        clones.push(clone);
+      }
+  
+      setInterval(() => {
+        row.scrollLeft += 1;
+  
+        if (row.scrollLeft >= row.scrollWidth - row.clientWidth) {
+          row.scrollLeft = 0;
+        }
+      }, speed); 
+    }
+  
+    autoScroll("movieRow1", 30); 
+    autoScroll("movieRow2", 10);  
+  </script>
+</body>
+</html>
