@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>GitHub Finder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header id="topBar">
+    <h1> GitHub Finder</h1>
+    <button id="themeToggle">다크모드</button>
+  </header>
+    <div class="container">
+    
+      <!-- 사용자 입력창 -->
+    <input type="text" id="username" placeholder="깃허브 사용자 이름을 입력하세요" />
+
+    <!-- 검색 버튼 -->
+    <button id="searchBtn">검색</button>
+
+    <!-- 로딩 중일 때 보여주는 스피너 -->
+    <div id="spinner" class="spinner hidden"></div>
+
+    <!-- 사용자 정보가 표시될 영역 -->
+    <div class="content-wrapper">
+    <div id="profile" class="profile-area"></div> <!-- 중앙 상세영역 -->
+    <div id="userList" class="list-area"></div>    <!-- 오른쪽 리스트영역 -->
+  </div>
+
+    <!-- 잔디밭(기여도 그래프)이 표시될 영역 -->
+    <div id="contributions"></div>
+    <ul id="repoList" class="repo-list"></ul>
+  </div>
+
+  <!-- JavaScript 파일 연결 -->
+  <script src="github.js"></script>
+  <script src="app.js"></script>
+</body>
+<footer id="pageFooter">
+  <p>© 2025 GitHub Finder</p>
+</footer>
+</html>
