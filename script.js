@@ -6,7 +6,7 @@ const COLS = 10;
 let selectedCell = null;
 
 function createSpreadsheet() {
-  // 첫 행: 빈칸 + A~J
+  
   container.appendChild(createHeaderCell(''));
   for (let j = 0; j < COLS; j++) {
     const header = createHeaderCell(String.fromCharCode(65 + j)); // A~J
@@ -14,7 +14,7 @@ function createSpreadsheet() {
   }
 
   for (let i = 0; i < ROWS; i++) {
-    // 왼쪽 열: 1~10
+  
     container.appendChild(createHeaderCell(i + 1));
 
     for (let j = 0; j < COLS; j++) {
@@ -49,13 +49,13 @@ function selectCell(cell) {
   const row = parseInt(cell.dataset.row);
   const col = parseInt(cell.dataset.col);
 
-  // 표시 텍스트
+  
   const colLetter = String.fromCharCode(65 + col);
   statusDisplay.textContent = `${colLetter}${row + 1}`;
 
-  // 헤더 하이라이트
-  const headerRow = container.children[1 + col]; // top header (0+1~10)
-  const headerCol = container.children[(row + 1) * (COLS + 1)]; // left header
+  
+  const headerRow = container.children[1 + col]; 
+  const headerCol = container.children[(row + 1) * (COLS + 1)]; 
   headerRow.classList.add('highlight-header');
   headerCol.classList.add('highlight-header');
 }
@@ -71,7 +71,7 @@ document.getElementById('export-btn').addEventListener('click', () => {
   for (let i = 0; i < ROWS; i++) {
     const row = [];
     for (let j = 0; j < COLS; j++) {
-      const index = (i + 1) * (COLS + 1) + (j + 1); // offset due to headers
+      const index = (i + 1) * (COLS + 1) + (j + 1); 
       const cell = container.children[index];
       row.push(cell.innerText.trim());
     }

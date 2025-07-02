@@ -8,7 +8,7 @@
 
 #spreadsheet-container {
   display: grid;
-  grid-template-columns: repeat(11, 80px); /* +1 for left header */
+  grid-template-columns: repeat(11, 80px); 
   grid-gap: 1px;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .highlight-header {
-  background-color: #d0ebff !important; /* 하늘색 */
+  background-color: #d0ebff !important; 
 }
 
 .header-cell {
