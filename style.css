@@ -1,0 +1,46 @@
+#export-btn {
+  background-color: aquamarine;
+  border: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+#spreadsheet-container {
+  display: grid;
+  grid-template-columns: repeat(11, 80px); /* +1 for left header */
+  grid-gap: 1px;
+}
+
+.cell, .header-cell {
+  width: 80px;
+  height: 30px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  padding: 5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cell {
+  background-color: white;
+}
+
+.cell:focus {
+  outline: none;
+}
+
+.active {
+  outline: 2px solid dodgerblue;
+}
+
+.highlight-header {
+  background-color: #d0ebff !important; /* 하늘색 */
+}
+
+.header-cell {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-align: center;
+  pointer-events: none;
+}
