@@ -8,18 +8,17 @@ dotenv.config();
 const app = express();
 const port = 4000;
 
-app.use(cors());
-app.use(express.json());
+app.use(cors());              // 모든 출처 허용 (개발용)
+app.use(express.json());      // JSON 요청 바디 파싱
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 app.post('/api/gpt', async (req, res) => {
-  const { choices } = req.body || [];
+  const choices = req.body.choices || [];
 
-  try {
-    const prompt = `
+  const prompt = `
 당신은 텍스트 어드벤처 게임의 스토리 생성기입니다.
 플레이어 선택 기록: ${choices.join(', ')}
 다음 스토리를 한 문장으로 써주세요.
@@ -33,6 +32,7 @@ app.post('/api/gpt', async (req, res) => {
 }
 `;
 
+  try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [{ role: 'user', content: prompt }],
