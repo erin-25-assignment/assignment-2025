@@ -1,0 +1,24 @@
+// {
+//   // Tailwind IntelliSense 관련 (필요 시 추가)
+//   "tailwindCSS.experimental.classRegex": [],
+
+//   // CSS, SCSS, Less 구문 검증 켜기 (false로 바꾸면 경고 사라짐)
+//   "css.validate": true,
+//   "scss.validate": true,
+//   "less.validate": true,
+
+//   // PostCSS 언어 지원 확장 사용 시 필요할 수도 있는 설정
+//   "css.customData": [
+//     "./node_modules/tailwindcss/tailwind.css"
+//   ]
+// }
+
+{
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false,
+  "tailwindCSS.experimental.classRegex": ["tw`([^`]*)", "clsx\\(([^)]*)\\)", "classnames\\(([^)]*)\\)"],
+  "editor.quickSuggestions": {
+    "strings": true
+  }
+}
