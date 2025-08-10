@@ -1,56 +1,35 @@
-import OpenAI from "openai";
-
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-});
-
 export type StoryResponse = {
   story: string;
   choices: string[];
   image: string;
+  isEnding: boolean;
 };
 
-export async function getNextStory(currentStory: string, choice: string): Promise<StoryResponse> {
+export type HistoryStep = {
+  story: string;
+  choice: string;
+  image: string;
+};
+
+export async function getNextStory(history: HistoryStep[]): Promise<StoryResponse> {
   try {
-    const prompt = `
-다음 상황에 맞는 새로운 스토리를 한 문장으로 만들어주세요.
-현재 스토리: ${currentStory}
-플레이어가 선택한 행동: ${choice}
-
-그리고 이어질 선택지 2개를 배열로 JSON 형태로 만들어주세요.
-예시 출력:
-{
-  "story": "새로운 방을 발견했다...",
-  "choices": ["안으로 들어간다", "도망친다"]
-}
-`;
-
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.8,
+    const res = await fetch("http://localhost:4000/api/story", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ choices: history.map(h => h.choice) }),  // 서버에서 choices 배열만 받는다고 가정
     });
 
-    const content = completion.choices[0].message?.content || "";
+    if (!res.ok) {
+      throw new Error(`서버 오류: ${res.status}`);
+    }
 
-    // GPT가 준 JSON 문자열 파싱
-    const parsed = JSON.parse(content);
-
-    // 이미지 프롬프트 간단 생성
-    const imagePrompt = `Illustration of: ${parsed.story}`;
-
-    const imageResponse = await openai.images.generate({
-      prompt: imagePrompt,
-      n: 1,
-      size: "512x512",
-    });
-
-    const imageUrl = imageResponse.data?.[0]?.url || "";
+    const data = await res.json();
 
     return {
-      story: parsed.story,
-      choices: parsed.choices,
-      image: imageUrl,
+      story: data.story || "스토리를 불러올 수 없습니다.",
+      choices: data.choices || [],
+      image: data.image || "",
+      isEnding: data.isEnding || false,
     };
   } catch (error) {
     console.error("API 호출 오류:", error);
@@ -58,6 +37,7 @@ export async function getNextStory(currentStory: string, choice: string): Promis
       story: "오류가 발생했습니다. 다시 시도해주세요.",
       choices: ["처음으로"],
       image: "",
+      isEnding: false,
     };
   }
 }

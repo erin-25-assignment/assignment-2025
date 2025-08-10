@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import StoryView from "../components/StoryView";
 import ChoiceButton from "../components/ChoiceButton";
@@ -18,35 +18,45 @@ export default function Game() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  // 캐시: key = JSON.stringify(history), value = StoryResponse
+  const cache = useRef<Record<string, StoryResponse>>({});
+
   useEffect(() => {
-    // 첫 화면에 초기 선택지 생성
     async function init() {
       setIsLoading(true);
-      const initResp = await getNextStory(story, "");
+      const stored = localStorage.getItem("story_history");
+      let restoredHistory: typeof history = [];
+      if (stored) {
+        try {
+          restoredHistory = JSON.parse(stored);
+          setHistory(restoredHistory);
+          setStep(restoredHistory.length);
+        } catch {
+          restoredHistory = [];
+        }
+      }
+
+      const cacheKey = JSON.stringify(restoredHistory);
+      if (cache.current[cacheKey]) {
+        const cached = cache.current[cacheKey];
+        setStory(cached.story);
+        setChoices(cached.choices);
+        setImageUrl(cached.image);
+        setIsLoading(false);
+        return;
+      }
+
+      const initResp = await getNextStory(restoredHistory);
       setStory(initResp.story);
       setChoices(initResp.choices);
       setImageUrl(initResp.image);
+      cache.current[cacheKey] = initResp;
       setIsLoading(false);
     }
     init();
   }, []);
 
-//  useEffect(() => {
-//   console.log("useEffect가 실행됐어요!");
-//   async function init() {
-//     console.log("init 함수 시작");
-//     setIsLoading(true);
-//     setStory("테스트 이야기입니다.");
-//     setChoices(["왼쪽으로 간다", "오른쪽으로 간다"]);
-//     setImageUrl("https://dummyimage.com/600x400/000/fff&text=Test+Image");
-//     setIsLoading(false);
-//     console.log("init 함수 끝");
-//   }
-//   init();
-// }, []);
-
   const selectEnding = (): StoryResponse => {
-    // endingMap에 인덱스 시그니처 추가 (key: string)
     const endingMap: {
       [key: string]: { story: string; choices: string[]; image: string; isEnding: boolean };
     } = {
@@ -77,7 +87,6 @@ export default function Game() {
     };
 
     const lastChoice = history[history.length - 1]?.choice || "";
-
     return endingMap[lastChoice] || endingMap["모든 것이 환상이었다"];
   };
 
@@ -96,34 +105,55 @@ export default function Game() {
       setImageUrl(ending.image);
       setStep(MAX_STEPS);
       setIsLoading(false);
-      // 히스토리 저장 후 이동
+
+      // 히스토리 저장
       localStorage.setItem("story_history", JSON.stringify(newHistory));
+
       setTimeout(() => {
         alert("게임 종료! 히스토리 페이지로 이동합니다.");
         navigate("/history");
       }, 500);
+
       return;
     }
 
-    // 다음 스토리 요청
-    const next: StoryResponse = await getNextStory(story, choice);
+    const cacheKey = JSON.stringify(newHistory);
+    if (cache.current[cacheKey]) {
+      const cached = cache.current[cacheKey];
+      setStory(cached.story);
+      setChoices(cached.choices);
+      setImageUrl(cached.image);
+      setStep(step + 1);
+      setIsLoading(false);
+      return;
+    }
+
+    const next: StoryResponse = await getNextStory(newHistory);
     setStory(next.story);
     setChoices(next.choices);
     setImageUrl(next.image);
     setStep(step + 1);
+    cache.current[cacheKey] = next;
     setIsLoading(false);
   };
 
   return (
-    <div className="p-4 max-w-2xl mx-auto">
-      <h1 className="text-lg font-semibold mb-2">AI 스토리 게임</h1>
-      <div className="mb-2">
+    <main className="p-6 max-w-3xl mx-auto dark:bg-gray-900 min-h-screen flex flex-col">
+      <header className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">AI 스토리 게임</h1>
+        {/* 여기에 앨범 아이콘, 새로하기, 이어하기 버튼 추가 가능 */}
+      </header>
+
+      <div className="mb-4 text-gray-700 dark:text-gray-300">
         단계: {step} / {MAX_STEPS}
       </div>
+
       <StoryView text={story} />
+
       <ImageViewer imageUrl={imageUrl} />
-      <div className="mt-4 grid grid-cols-1 gap-2 max-h-96 overflow-y-auto">
-        {choices.length === 0 && <p>선택지가 없습니다.</p>}
+
+      <section className="mt-6 grid grid-cols-1 gap-3 max-h-96 overflow-y-auto">
+        {choices.length === 0 && <p className="text-center text-gray-500 dark:text-gray-400">선택지가 없습니다.</p>}
         {choices.map((choice, idx) => (
           <ChoiceButton
             key={idx}
@@ -132,8 +162,13 @@ export default function Game() {
             disabled={isLoading}
           />
         ))}
-      </div>
-      {isLoading && <p className="mt-2 text-gray-500">로딩 중...</p>}
-    </div>
+      </section>
+
+      {isLoading && (
+        <p className="mt-4 text-center text-gray-500 dark:text-gray-400 animate-pulse">
+          로딩 중...
+        </p>
+      )}
+    </main>
   );
 }
