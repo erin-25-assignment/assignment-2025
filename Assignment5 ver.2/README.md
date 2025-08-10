@@ -13,7 +13,7 @@
 ## 🛠️ 사용된 기술 스택
 
 - **Framework**: Next.js (with App Router)
-- **UI**: React, TypeScript, ShadCN/UI, Tailwind CSS
+- **UI**: React, TypeScript
 - **Generative AI**: Google Gemini, Genkit
 
 ## 🚀 로컬에서 시작하기
