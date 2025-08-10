@@ -7,13 +7,13 @@
 - **동적 스토리텔링**: Genkit AI를 활용하여 플레이어의 선택과 캐릭터에 따라 미묘하게 변화하는 서사를 제공하여 높은 몰입감을 선사합니다.
 - **AI 이미지 생성**: 각 장면에 맞는 분위기의 이미지를 AI가 실시간으로 생성하여 시각적인 재미를 더합니다.
 - **두 명의 주인공, 다른 시점**: 구조대원 '리오'와 조난자 '세라', 각기 다른 시점에서 스토리를 진행하며 진실에 다가갈 수 있습니다.
-- **멀티 엔딩**: 플레이어의 여정에 따라 다양한 결말을 맞이하게 됩니다.
+- **멀티 엔딩 및 앨범**: 플레이어의 여정에 따라 다양한 결말을 맞이하게 되며, 수집한 엔딩을 '엔딩 앨범'에서 언제든지 다시 확인할 수 있습니다.
 - **게임 상태 저장**: 게임 진행 상황이 브라우저의 Local Storage에 자동으로 저장되어 언제든지 이어서 플레이할 수 있습니다.
 
 ## 🛠️ 사용된 기술 스택
 
 - **Framework**: Next.js (with App Router)
-- **UI**: React, TypeScript
+- **UI**: React, TypeScript, CSS Modules
 - **Generative AI**: Google Gemini, Genkit
 
 ## 🚀 로컬에서 시작하기
@@ -58,11 +58,10 @@
 ```
 /
 ├── src/
-│   ├── app/                # Next.js App Router 페이지 및 라우팅
+│   ├── app/                # Next.js App Router 페이지 및 라우팅 (page.tsx, globals.css)
 │   ├── ai/                 # Genkit AI 흐름(Flows) 및 설정
-│   ├── components/         # UI 컴포넌트 (ShadCN/UI 포함)
-│   ├── hooks/              # 커스텀 React Hooks
-│   └── lib/                # 스토리 데이터, 타입 정의, 유틸리티 함수
+│   ├── lib/                # 스토리 데이터, 타입 정의, 유틸리티 함수
+│   └── components/         # React 컴포넌트
 ├── public/                 # 정적 에셋 (이미지 등)
-└── tailwind.config.ts      # Tailwind CSS 설정
+└── package.json            # 프로젝트 종속성 및 스크립트
 ```
