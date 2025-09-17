@@ -40,9 +40,35 @@
     npm install
     ```
 
-4.  **개발 서버 실행:**
+4.   **Firebase 설정 추가:**
+
+    프로젝트 루트 또는 `src/lib/`에 `firebase.ts` 파일을 생성하고 다음 구조를 따라 입력하세요.  
+    민감한 정보(API Key 등)는 각자 Firebase 콘솔에서 발급받아 입력해야 합니다.
+
+    ```ts
+    import { initializeApp } from "firebase/app";
+    import { getFirestore } from "firebase/firestore";
+
+    const firebaseConfig = {
+      apiKey: "<YOUR_API_KEY>",
+      authDomain: "<YOUR_AUTH_DOMAIN>",
+      projectId: "<YOUR_PROJECT_ID>",
+      storageBucket: "<YOUR_STORAGE_BUCKET>",
+      messagingSenderId: "<YOUR_MESSAGING_SENDER_ID>",
+      appId: "<YOUR_APP_ID>",
+      measurementId: "<YOUR_MEASUREMENT_ID>",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    export const db = getFirestore(app);
+    ```
+
+    ⚠️ `.gitignore`에 `firebase.ts`를 추가하여 깃에 업로드되지 않도록 해야 합니다.
+
+5.  **개발 서버 실행:**
     ```bash
     npm run dev
+    ```
     ```
 
 이제 브라우저에서 `http://localhost:3000` (또는 터미널에 안내된 다른 포트)으로 접속하여 애플리케이션을 확인할 수 있습니다.
