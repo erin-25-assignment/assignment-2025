@@ -1,16 +1,8 @@
 import { GoogleGenAI, Type, Part } from "@google/genai";
 import { Keyword, QuizQuestion, QuizType, StudyMaterial, Language } from "../types";
 
-// =================================================================================
-// IMPORTANT: GEMINI API KEY
-// =================================================================================
-// Replace "YOUR_GEMINI_API_KEY" with your actual Google AI Studio API key.
-// You can get a key from https://aistudio.google.com/app/apikey
-//
-// NOTE: Using a .env file will NOT work in this environment.
-// You MUST enter your API key directly here for the app to function.
-// =================================================================================
-const ai = new GoogleGenAI({ apiKey: "YOUR_GEMINI_API_KEY" });
+// Correctly read the API key from Vite's environment variables
+const ai = new GoogleGenAI({ apiKey: (import.meta as any).env.VITE_GEMINI_API_KEY });
 
 interface StudyAidsResponse {
   summary: string;

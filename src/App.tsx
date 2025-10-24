@@ -64,13 +64,31 @@ const App: React.FC = () => {
 
   // Effect to handle navigation based on auth state
   useEffect(() => {
-    if (!isAuthLoading) {
-        if (currentUser && [AppStep.SPLASH, AppStep.USER_SELECTION, AppStep.SIGN_UP, AppStep.FORGOT_PASSWORD, AppStep.FORGOT_PASSWORD_CONFIRMATION].includes(appStep)) {
+    if (isAuthLoading) return;
+
+    // After loading, if we're still on the splash screen, decide where to go.
+    if (appStep === AppStep.SPLASH) {
+        if (currentUser) {
             setAppStep(AppStep.INPUT);
-        } else if (!currentUser) {
-            resetStudy();
+        } else {
             setAppStep(AppStep.USER_SELECTION);
         }
+        return;
+    }
+
+    // For other steps, handle redirection if auth state doesn't match the page type
+    const isAuthFlowPage = [
+        AppStep.USER_SELECTION,
+        AppStep.SIGN_UP,
+        AppStep.FORGOT_PASSWORD,
+        AppStep.FORGOT_PASSWORD_CONFIRMATION
+    ].includes(appStep);
+
+    if (currentUser && isAuthFlowPage) {
+        setAppStep(AppStep.INPUT);
+    } else if (!currentUser && !isAuthFlowPage) {
+        resetStudy();
+        setAppStep(AppStep.USER_SELECTION);
     }
   }, [currentUser, isAuthLoading, appStep, resetStudy]);
 

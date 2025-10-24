@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Language } from '../types';
 import { ArrowBackIcon, PersonIcon } from './icons';
 import { auth } from '../services/firebaseService';
-import { sendPasswordResetEmail, fetchSignInMethodsForEmail } from 'firebase/auth';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 interface ForgotPasswordViewProps {
   onEmailSent: () => void;
@@ -24,7 +24,6 @@ const ForgotPasswordView: React.FC<ForgotPasswordViewProps> = ({ onEmailSent, on
       sendLink: "재설정 링크 받기",
       errorNotFound: "가입되지 않은 이메일입니다.",
       errorInvalid: "유효한 이메일 주소를 입력해주세요.",
-      errorSocial: "이 이메일은 소셜 계정으로 가입되었습니다. 소셜 로그인을 이용해주세요.",
     },
     en: {
       title: "Forgot Password",
@@ -34,7 +33,6 @@ const ForgotPasswordView: React.FC<ForgotPasswordViewProps> = ({ onEmailSent, on
       sendLink: "Get Reset Link",
       errorNotFound: "This email is not registered.",
       errorInvalid: "Please enter a valid email address.",
-      errorSocial: "This email is registered with a social account. Please use social login.",
     }
   }[language];
 
@@ -49,21 +47,15 @@ const ForgotPasswordView: React.FC<ForgotPasswordViewProps> = ({ onEmailSent, on
 
     setLoading(true);
     try {
-        const signInMethods = await fetchSignInMethodsForEmail(auth, email);
-        if (signInMethods.includes('password')) {
-            // User has an email/password account.
-            await sendPasswordResetEmail(auth, email);
-            onEmailSent();
-        } else if (signInMethods.length > 0) {
-            // User exists but uses a social provider.
-            setError(text.errorSocial);
-        } else {
-            // User does not exist.
-            setError(text.errorNotFound);
-        }
+        await sendPasswordResetEmail(auth, email);
+        onEmailSent();
     } catch(error: any) {
-        console.error("Password reset check error:", error);
-        setError(text.errorInvalid); // Generic fallback error
+        console.error("Password reset error:", error);
+        if(error.code === 'auth/user-not-found'){
+            setError(text.errorNotFound);
+        } else {
+            setError(text.errorInvalid)
+        }
     } finally {
         setLoading(false);
     }

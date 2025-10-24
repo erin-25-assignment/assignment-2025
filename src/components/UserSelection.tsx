@@ -142,7 +142,7 @@ const UserSelection: React.FC<UserSelectionProps> = ({ onGoToSignUp, onGoToForgo
           <div className="text-center">
             <p className="text-sm text-slate-600 dark:text-slate-400">
               {text.noAccount[language]}
-              <button type="button" onClick={onGoToSignUp} className="font-bold text-primary hover:underline ml-1">{text.signUp[language]}</button>
+              <button onClick={onGoToSignUp} className="font-bold text-primary hover:underline ml-1">{text.signUp[language]}</button>
             </p>
           </div>
         </div>

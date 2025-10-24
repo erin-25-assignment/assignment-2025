@@ -12,150 +12,101 @@ AI 기반 학습 보조 애플리케이션입니다. 학습 자료(PDF, 이미�
     *   **다양한 문제 유형**: 객관식, O/X(참/거짓), 단답형 문제를 생성할 수 있습니다.
     *   **문제 수 조절**: 원하는 만큼 문제 수를 설정하여 퀴즈를 풀 수 있습니다.
 *   **오답 노트**: 퀴즈에서 틀린 문제들을 자동으로 기록하여 복습을 돕습니다.
+*   **Firebase 기반 사용자 인증 및 데이터 저장**:
+    *   이메일/비밀번호 및 Google 소셜 로그인을 지원합니다.
+    *   사용자별 설정과 오답 노트를 Firestore에 안전하게 저장하고 관리합니다.
 *   **사용자 맞춤 설정**:
-    *   **다중 프로필**: 여러 사용자의 학습 기록과 오답 노트를 개별적으로 관리합니다.
     *   **테마 설정**: 시스템 설정, 라이트/다크 모드를 지원합니다.
     *   **언어 설정**: 한국어와 영어를 지원합니다.
 
 ## 🛠️ 기술 스택
 
-*   **Frontend**: React, TypeScript, Tailwind CSS
+*   **Frontend**: React, TypeScript, Vite, Tailwind CSS
 *   **AI**: Google Gemini API (`@google/genai`)
+*   **Backend-as-a-Service**: Firebase (Authentication, Firestore)
 *   **Library**: `pdf.js`
 
-## 🚀 시작하기
+## 🚀 시작하기 (Getting Started)
 
-이 프로젝트를 로컬 환경에서 실행하는 방법은 다음과 같습니다.
+이 애플리케이션은 Node.js와 Vite를 기반으로 하는 표준 웹 개발 환경을 사용합니다.
 
-### 사전 요구사항
+### 사전 요구 사항
 
-*   [Node.js](https://nodejs.org/) (v18 이상 권장)
-*   npm 또는 yarn
+*   [Node.js](https://nodejs.org/) (LTS 버전 권장)
+*   `npm` (Node.js 설치 시 함께 설치됩니다)
 
 ### 설치 및 실행
 
-1.  **GitHub에서 프로젝트 클론하기**:
+1.  **저장소 복제 및 이동**:
     ```bash
-    git clone https://github.com/your-username/studymate-ai.git
+    git clone <repository-url>
     cd studymate-ai
     ```
 
-2.  **의존성 패키지 설치하기**:
+2.  **API 키 및 Firebase 설정**:
+    프로젝트 루트 경로에 있는 `.env.example` 파일의 복사본을 만들어 `.env` 라는 이름으로 저장하세요.
+    ```bash
+    cp .env.example .env
+    ```
+    `.env` 파일을 열고, 각 변수 이름 뒤의 `=` 다음에 오는 `"YOUR_..._KEY"` 부분을 실제 값으로 교체해주세요. **따옴표는 제거하지 마세요.**
+
+    **예시:**
+    ```env
+    # .env 파일
+
+    # Google Gemini API Key
+    # "YOUR_GEMINI_API_KEY" 부분을 실제 API 키로 바꾸세요.
+    VITE_GEMINI_API_KEY="AIzaSy...your...actual...key"
+
+    # Firebase Configuration
+    # "YOUR_FIREBASE_..." 부분을 Firebase 콘솔에서 복사한 실제 값으로 바꾸세요.
+    VITE_FIREBASE_API_KEY="AIzaSy...your...firebase...key"
+    VITE_FIREBASE_AUTH_DOMAIN="your-project-id.firebaseapp.com"
+    VITE_FIREBASE_PROJECT_ID="your-project-id"
+    VITE_FIREBASE_STORAGE_BUCKET="your-project-id.appspot.com"
+    VITE_FIREBASE_MESSAGING_SENDER_ID="1234567890"
+    VITE_FIREBASE_APP_ID="1:1234567890:web:abcdef123456"
+    ```
+
+    *   **`VITE_GEMINI_API_KEY`**: [Google AI Studio](https://aistudio.google.com/app/apikey)에서 API 키를 생성하여 붙여넣습니다.
+    *   **Firebase 변수**: [Firebase Console](https://console.firebase.google.com/)에서 웹 앱을 설정할 때 받은 `firebaseConfig` 객체의 값들을 해당하는 변수에 붙여넣습니다.
+
+3.  **Firebase Console 설정**:
+    *   **인증 공급자 활성화**: Firebase Console에서 **Authentication** > **Sign-in method** 탭으로 이동하여 **이메일/비밀번호**와 **Google** 공급자를 활성화합니다.
+    *   **Firestore 데이터베이스 생성 및 규칙 설정**:
+        *   **Firestore Database**로 이동하여 '데이터베이스 만들기'를 클릭합니다.
+        *   **프로덕션 모드에서 시작**을 선택하고, 리전을 선택합니다.
+        *   **규칙** 탭으로 이동하여 기존 규칙을 다음 내용으로 교체하고 '게시'를 클릭합니다.
+        ```
+        rules_version = '2';
+        service cloud.firestore {
+          match /databases/{database}/documents {
+            match /users/{userId}/{documents=**} {
+              allow read, write: if request.auth != null && request.auth.uid == userId;
+            }
+          }
+        }
+        ```
+
+4.  **패키지 설치**:
+    터미널에서 다음 명령어를 실행하여 필요한 모든 패키지를 설치합니다.
     ```bash
     npm install
-    # 또는 yarn을 사용하는 경우
-    # yarn install
     ```
 
-3.  **환경 변수 설정하기**:
-    프로젝트를 실행하려면 Google Gemini API 키가 필요합니다.
-
-    *   [Google AI Studio](https://aistudio.google.com/app/apikey)에서 API 키를 발급받으세요.
-    *   프로젝트의 루트 디렉터리에 `.env` 파일을 생성하세요.
-    *   다음과 같은 형식으로 `.env` 파일에 API 키를 추가하세요.
-
-    ```
-    API_KEY=YOUR_GEMINI_API_KEY_HERE
-    ```
-
-4.  **개발 서버 실행하기**:
+5.  **개발 서버 실행**:
+    설치가 완료되면, 다음 명령어로 개발 서버를 시작합니다.
     ```bash
     npm run dev
-    # 또는 yarn을 사용하는 경우
-    # yarn dev
     ```
-
-5.  **애플리케이션 접속하기**:
-    브라우저를 열고 `http://localhost:5173` (또는 터미널에 표시되는 주소)으로 접속하세요.
+    터미널에 표시된 로컬 주소(예: `http://localhost:5173`)를 웹 브라우저에서 열어 앱을 확인합니다.
 
 ## 📝 사용 방법
 
-1.  **로그인 / 회원가입**: 이메일 또는 소셜 계정으로 로그인하거나 새 계정을 만듭니다.
+1.  **로그인 / 회원가입**: 이메일 또는 Google 계정으로 로그인하거나 새 계정을 만듭니다.
 2.  **과목명 입력**: 학습할 과목의 이름을 입력합니다.
 3.  **학습 자료 업로드**: PDF, 이미지, TXT 파일을 업로드하거나 마이크를 사용해 강의 내용을 녹음합니다.
 4.  **AI 분석 결과 확인**: AI가 생성한 핵심 요약과 주요 키워드를 확인합니다.
 5.  **퀴즈 생성**: 원하는 문제 유형(객관식, O/X, 단답형)과 개수를 선택하여 AI 퀴즈를 생성합니다.
 6.  **퀴즈 풀이 및 결과 확인**: 생성된 퀴즈를 풀고 점수와 피드백을 확인합니다.
 7.  **오답 노트 복습**: 틀린 문제들은 '오답 노트'에 자동으로 저장되며, 언제든지 다시 복습할 수 있습니다.
-
----
-
-# StudyMate AI (English)
-
-An AI-powered learning assistant application. Upload your study materials (PDF, images, audio, etc.), and the AI will summarize the core content, extract key terms, and generate custom review quizzes to maximize your learning efficiency.
-
-## ✨ Key Features
-
-*   **Supports Various Study Materials**: Input materials via PDF, images (JPG, PNG), TXT files, and audio recordings.
-*   **AI-Generated Study Aids**:
-    *   **Core Summary**: The AI automatically summarizes the key points of long study materials.
-    *   **Key Keyword Extraction**: Provides a list of important terms and their definitions.
-*   **Custom AI Quizzes**:
-    *   **Multiple Question Types**: Generate multiple-choice, T/F (True/False), and short-answer questions.
-    *   **Adjustable Question Count**: Set the number of questions you want to solve.
-*   **Incorrect Answer Notes**: Automatically records questions you get wrong on quizzes to help with your review.
-*   **User Customization**:
-    *   **Multiple Profiles**: Manage learning history and incorrect notes for multiple users separately.
-    *   **Theme Settings**: Supports system settings, light mode, and dark mode.
-    *   **Language Settings**: Supports Korean and English.
-
-## 🛠️ Tech Stack
-
-*   **Frontend**: React, TypeScript, Tailwind CSS
-*   **AI**: Google Gemini API (`@google/genai`)
-*   **Library**: `pdf.js`
-
-## 🚀 Getting Started
-
-Follow these instructions to run the project in your local environment.
-
-### Prerequisites
-
-*   [Node.js](https://nodejs.org/) (v18 or higher recommended)
-*   npm or yarn
-
-### Installation and Setup
-
-1.  **Clone the project from GitHub**:
-    ```bash
-    git clone https://github.com/your-username/studymate-ai.git
-    cd studymate-ai
-    ```
-
-2.  **Install dependencies**:
-    ```bash
-    npm install
-    # Or if you use yarn
-    # yarn install
-    ```
-
-3.  **Set up environment variables**:
-    You need a Google Gemini API key to run the project.
-
-    *   Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
-    *   Create a `.env` file in the root directory of the project.
-    *   Add your API key to the `.env` file in the following format:
-
-    ```
-    API_KEY=YOUR_GEMINI_API_KEY_HERE
-    ```
-
-4.  **Run the development server**:
-    ```bash
-    npm run dev
-    # Or if you use yarn
-    # yarn dev
-    ```
-
-5.  **Access the application**:
-    Open your browser and navigate to `http://localhost:5173` (or the address shown in your terminal).
-
-## 📝 How to Use
-
-1.  **Login / Sign Up**: Log in with your email or a social account, or create a new account.
-2.  **Enter Subject Name**: Type the name of the subject you want to study.
-3.  **Upload Study Material**: Upload a PDF, image, or TXT file, or use the microphone to record lecture content.
-4.  **Review AI Analysis**: Check the core summary and key keywords generated by the AI.
-5.  **Generate a Quiz**: Select the desired question type (Multiple Choice, T/F, Short Answer) and the number of questions to create an AI quiz.
-6.  **Take Quiz & Check Results**: Solve the generated quiz and review your score and feedback.
-7.  **Review Incorrect Notes**: Wrong answers are automatically saved in the 'Incorrect Notes' section, where you can review them anytime.
