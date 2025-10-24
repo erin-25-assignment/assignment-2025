@@ -1,0 +1,161 @@
+# 스터디메이트 AI (StudyMate AI)
+
+AI 기반 학습 보조 애플리케이션입니다. 학습 자료(PDF, 이미지, 음성 등)를 업로드하면 AI가 핵심 내용을 요약하고, 주요 키워드를 추출하며, 맞춤형 복습 퀴즈를 생성해 주어 학습 효율을 극대화합니다.
+
+## ✨ 주요 기능
+
+*   **다양한 학습 자료 지원**: PDF, 이미지(JPG, PNG), TXT 파일 및 음성 녹음을 통해 학습 자료를 입력받습니다.
+*   **AI 기반 학습 보조 자료 생성**:
+    *   **핵심 요약**: 긴 학습 자료의 핵심 내용을 AI가 자동으로 요약합니다.
+    *   **주요 키워드 추출**: 중요한 용어와 그에 대한 정의를 목록으로 제공합니다.
+*   **맞춤형 AI 퀴즈**:
+    *   **다양한 문제 유형**: 객관식, O/X(참/거짓), 단답형 문제를 생성할 수 있습니다.
+    *   **문제 수 조절**: 원하는 만큼 문제 수를 설정하여 퀴즈를 풀 수 있습니다.
+*   **오답 노트**: 퀴즈에서 틀린 문제들을 자동으로 기록하여 복습을 돕습니다.
+*   **사용자 맞춤 설정**:
+    *   **다중 프로필**: 여러 사용자의 학습 기록과 오답 노트를 개별적으로 관리합니다.
+    *   **테마 설정**: 시스템 설정, 라이트/다크 모드를 지원합니다.
+    *   **언어 설정**: 한국어와 영어를 지원합니다.
+
+## 🛠️ 기술 스택
+
+*   **Frontend**: React, TypeScript, Tailwind CSS
+*   **AI**: Google Gemini API (`@google/genai`)
+*   **Library**: `pdf.js`
+
+## 🚀 시작하기
+
+이 프로젝트를 로컬 환경에서 실행하는 방법은 다음과 같습니다.
+
+### 사전 요구사항
+
+*   [Node.js](https://nodejs.org/) (v18 이상 권장)
+*   npm 또는 yarn
+
+### 설치 및 실행
+
+1.  **GitHub에서 프로젝트 클론하기**:
+    ```bash
+    git clone https://github.com/your-username/studymate-ai.git
+    cd studymate-ai
+    ```
+
+2.  **의존성 패키지 설치하기**:
+    ```bash
+    npm install
+    # 또는 yarn을 사용하는 경우
+    # yarn install
+    ```
+
+3.  **환경 변수 설정하기**:
+    프로젝트를 실행하려면 Google Gemini API 키가 필요합니다.
+
+    *   [Google AI Studio](https://aistudio.google.com/app/apikey)에서 API 키를 발급받으세요.
+    *   프로젝트의 루트 디렉터리에 `.env` 파일을 생성하세요.
+    *   다음과 같은 형식으로 `.env` 파일에 API 키를 추가하세요.
+
+    ```
+    API_KEY=YOUR_GEMINI_API_KEY_HERE
+    ```
+
+4.  **개발 서버 실행하기**:
+    ```bash
+    npm run dev
+    # 또는 yarn을 사용하는 경우
+    # yarn dev
+    ```
+
+5.  **애플리케이션 접속하기**:
+    브라우저를 열고 `http://localhost:5173` (또는 터미널에 표시되는 주소)으로 접속하세요.
+
+## 📝 사용 방법
+
+1.  **로그인 / 회원가입**: 이메일 또는 소셜 계정으로 로그인하거나 새 계정을 만듭니다.
+2.  **과목명 입력**: 학습할 과목의 이름을 입력합니다.
+3.  **학습 자료 업로드**: PDF, 이미지, TXT 파일을 업로드하거나 마이크를 사용해 강의 내용을 녹음합니다.
+4.  **AI 분석 결과 확인**: AI가 생성한 핵심 요약과 주요 키워드를 확인합니다.
+5.  **퀴즈 생성**: 원하는 문제 유형(객관식, O/X, 단답형)과 개수를 선택하여 AI 퀴즈를 생성합니다.
+6.  **퀴즈 풀이 및 결과 확인**: 생성된 퀴즈를 풀고 점수와 피드백을 확인합니다.
+7.  **오답 노트 복습**: 틀린 문제들은 '오답 노트'에 자동으로 저장되며, 언제든지 다시 복습할 수 있습니다.
+
+---
+
+# StudyMate AI (English)
+
+An AI-powered learning assistant application. Upload your study materials (PDF, images, audio, etc.), and the AI will summarize the core content, extract key terms, and generate custom review quizzes to maximize your learning efficiency.
+
+## ✨ Key Features
+
+*   **Supports Various Study Materials**: Input materials via PDF, images (JPG, PNG), TXT files, and audio recordings.
+*   **AI-Generated Study Aids**:
+    *   **Core Summary**: The AI automatically summarizes the key points of long study materials.
+    *   **Key Keyword Extraction**: Provides a list of important terms and their definitions.
+*   **Custom AI Quizzes**:
+    *   **Multiple Question Types**: Generate multiple-choice, T/F (True/False), and short-answer questions.
+    *   **Adjustable Question Count**: Set the number of questions you want to solve.
+*   **Incorrect Answer Notes**: Automatically records questions you get wrong on quizzes to help with your review.
+*   **User Customization**:
+    *   **Multiple Profiles**: Manage learning history and incorrect notes for multiple users separately.
+    *   **Theme Settings**: Supports system settings, light mode, and dark mode.
+    *   **Language Settings**: Supports Korean and English.
+
+## 🛠️ Tech Stack
+
+*   **Frontend**: React, TypeScript, Tailwind CSS
+*   **AI**: Google Gemini API (`@google/genai`)
+*   **Library**: `pdf.js`
+
+## 🚀 Getting Started
+
+Follow these instructions to run the project in your local environment.
+
+### Prerequisites
+
+*   [Node.js](https://nodejs.org/) (v18 or higher recommended)
+*   npm or yarn
+
+### Installation and Setup
+
+1.  **Clone the project from GitHub**:
+    ```bash
+    git clone https://github.com/your-username/studymate-ai.git
+    cd studymate-ai
+    ```
+
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    # Or if you use yarn
+    # yarn install
+    ```
+
+3.  **Set up environment variables**:
+    You need a Google Gemini API key to run the project.
+
+    *   Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+    *   Create a `.env` file in the root directory of the project.
+    *   Add your API key to the `.env` file in the following format:
+
+    ```
+    API_KEY=YOUR_GEMINI_API_KEY_HERE
+    ```
+
+4.  **Run the development server**:
+    ```bash
+    npm run dev
+    # Or if you use yarn
+    # yarn dev
+    ```
+
+5.  **Access the application**:
+    Open your browser and navigate to `http://localhost:5173` (or the address shown in your terminal).
+
+## 📝 How to Use
+
+1.  **Login / Sign Up**: Log in with your email or a social account, or create a new account.
+2.  **Enter Subject Name**: Type the name of the subject you want to study.
+3.  **Upload Study Material**: Upload a PDF, image, or TXT file, or use the microphone to record lecture content.
+4.  **Review AI Analysis**: Check the core summary and key keywords generated by the AI.
+5.  **Generate a Quiz**: Select the desired question type (Multiple Choice, T/F, Short Answer) and the number of questions to create an AI quiz.
+6.  **Take Quiz & Check Results**: Solve the generated quiz and review your score and feedback.
+7.  **Review Incorrect Notes**: Wrong answers are automatically saved in the 'Incorrect Notes' section, where you can review them anytime.
